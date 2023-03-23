@@ -1,1 +1,12 @@
 # FoliumScope
+![1](https://user-images.githubusercontent.com/93210173/227291463-0cf9e78e-a2d8-4cca-929c-602faf896ffa.jpg)
+![2](https://user-images.githubusercontent.com/93210173/227291491-5a2335b0-f060-4a18-958a-c30cbe48ca96.jpg)
+![3](https://user-images.githubusercontent.com/93210173/227291503-90a282af-2f2f-4f7c-a2f5-2cdce189e9af.jpg)
+![4](https://user-images.githubusercontent.com/93210173/227291517-a046a893-269d-4263-9a73-fa55be286db3.jpg)
+![5](https://user-images.githubusercontent.com/93210173/227291531-d117b4c1-5061-4e95-97a7-8ca15a7dca59.jpg)
+![6](https://user-images.githubusercontent.com/93210173/227291553-65175dba-7c64-477e-8d08-ee1708d18e23.jpg)
+![7](https://user-images.githubusercontent.com/93210173/227291555-7771c955-b32d-432e-9cfd-932ac2516d97.jpg)
+![8](https://user-images.githubusercontent.com/93210173/227291572-95ae0a30-947d-4f32-8742-67780df2e199.jpg)
+![9](https://user-images.githubusercontent.com/93210173/227291594-452693ce-f8db-4133-b6b1-94981576d592.jpg)
+![10](https://user-images.githubusercontent.com/93210173/227291608-f3bcd790-6c52-4794-9c6d-be5bc2ddb625.jpg)
+![11](https://user-images.githubusercontent.com/93210173/227291620-29c1c952-ce6b-4231-a6ed-b615b42c2377.jpg)
