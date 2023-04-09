@@ -3,7 +3,6 @@ Flask
 python
 numpy
 pandas
-__future__
 keras
 tensorflow
 matplotlib
