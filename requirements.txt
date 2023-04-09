@@ -5,9 +5,5 @@ pandas
 keras
 tensorflow
 matplotlib
-PIL
-picamera
-werkzeug
-time
 
 
