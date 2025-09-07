@@ -22,7 +22,7 @@ import numpy as np
 
 # Flask utils
 from flask import Flask, redirect, url_for, request, render_template, jsonify, flash
-
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # put this at the top of your app
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
