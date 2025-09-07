@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block title %}FoliumScope - AI-Powered Plant Disease Detection{% endblock %}
+{% block description %}Upload a plant image and get instant AI-powered disease detection results. Identify plant health issues with advanced machine learning technology.{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section id="home" class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-100 pt-5">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="display-4 fw-bold text-dark mb-4">
+                        AI-Powered 
+                        <span class="text-success">Plant Disease</span> 
+                        Detection
+                    </h1>
+                    <p class="lead text-muted mb-4">
+                        Upload a photo of your plant and get instant, accurate disease detection results using advanced machine learning technology. Help keep your plants healthy with FoliumScope.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#upload" class="btn btn-success btn-lg px-4 py-3 me-3 smooth-scroll">
+                            <i class="fas fa-camera me-2"></i>Try Now - It's Free
+                        </a>
+                        <a href="#features" class="btn btn-outline-success btn-lg px-4 py-3 smooth-scroll">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-image">
+                    <div class="floating-card">
+                        <i class="fas fa-leaf text-success mb-3" style="font-size: 3rem;"></i>
+                        <h6 class="text-success">Advanced AI Detection</h6>
+                        <p class="text-muted mb-0">Identifies 5+ plant conditions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <h2 class="display-5 fw-bold text-dark">Why Choose FoliumScope?</h2>
+                <p class="lead text-muted">Advanced machine learning technology makes plant disease detection simple, fast, and accurate.</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-bolt text-success"></i>
+                    </div>
+                    <h5 class="fw-semibold">Instant Analysis</h5>
+                    <p class="text-muted mb-0">Get results in seconds using advanced machine learning algorithms</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-bullseye text-success"></i>
+                    </div>
+                    <h5 class="fw-semibold">High Accuracy</h5>
+                    <p class="text-muted mb-0">Trained on thousands of plant images for reliable disease detection</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-leaf text-success"></i>
+                    </div>
+                    <h5 class="fw-semibold">Multiple Plants</h5>
+                    <p class="text-muted mb-0">Supports various plant species and disease types</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-mobile-alt text-success"></i>
+                    </div>
+                    <h5 class="fw-semibold">Mobile Friendly</h5>
+                    <p class="text-muted mb-0">Works perfectly on desktop, tablet, and mobile devices</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <h2 class="display-5 fw-bold text-dark">How It Works</h2>
+                <p class="lead text-muted">Simple 3-step process to detect plant diseases instantly</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="step-card text-center">
+                    <div class="step-number">1</div>
+                    <div class="step-icon mb-3">
+                        <i class="fas fa-camera text-success"></i>
+                    </div>
+                    <h5 class="fw-semibold">Upload Image</h5>
+                    <p class="text-muted">Take a clear photo of your plant or upload from your device</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card text-center">
+                    <div class="step-number">2</div>
+                    <div class="step-icon mb-3">
+                        <i class="fas fa-brain text-success"></i>
+                    </div>
+                    <h5 class="fw-semibold">AI Analysis</h5>
+                    <p class="text-muted">Our machine learning model analyzes the plant image instantly</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card text-center">
+                    <div class="step-number">3</div>
+                    <div class="step-icon mb-3">
+                        <i class="fas fa-check-circle text-success"></i>
+                    </div>
+                    <h5 class="fw-semibold">Get Results</h5>
+                    <p class="text-muted">Receive instant diagnosis with confidence levels and recommendations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Upload Section -->
+<section id="upload" class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <h2 class="display-5 fw-bold text-dark">Try Plant Disease Detection</h2>
+                <p class="lead text-muted">Upload a plant image to get started with AI-powered disease detection</p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="upload-container bg-white rounded-4 shadow-lg p-4 p-md-5">
+                    <!-- File Upload Area -->
+                    <form id="upload-form" enctype="multipart/form-data">
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-content text-center">
+                                <i class="fas fa-cloud-upload-alt text-success mb-3" style="font-size: 3rem;"></i>
+                                <h5 class="fw-semibold text-dark mb-2">Drag & Drop Your Plant Image</h5>
+                                <p class="text-muted mb-3">Or click to browse files</p>
+                                <!--<button type="button" class="btn btn-success btn-lg">
+                                    <i class="fas fa-image me-2"></i>Choose Image
+                                </button>-->
+                                <button type="button" class="btn btn-success btn-lg" onclick="document.getElementById('imageUpload').click();">
+                                    <i class="fas fa-image me-2"></i>Choose Image
+                                </button>
+                                <input type="file" id="imageUpload" name="file" accept="image/*" style="display: none;">
+                                <div class="mt-3">
+                                    <small class="text-muted">Supports: JPG, PNG, JPEG (Max: 5MB)</small>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Image Preview -->
+                    <div class="image-section mt-4" style="display: none;">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <div class="img-preview mx-auto">
+                                    <div id="imagePreview"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-3 mt-md-0">
+                                <div class="text-center text-md-start">
+                                    <h6 class="fw-semibold text-dark mb-2">Image Ready for Analysis</h6>
+                                    <p class="text-muted mb-3">Click analyze to detect plant diseases</p>
+                                    <button type="button" class="btn btn-success btn-lg" id="btn-predict">
+                                        <i class="fas fa-search me-2"></i>Analyze Plant
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div class="loading-section text-center py-4" style="display: none;">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <h6 class="mt-3 text-dark">Analyzing your plant image...</h6>
+                        <p class="text-muted mb-0">This may take a few seconds</p>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="results-section mt-4" id="result" style="display: none;">
+                        <div class="result-card">
+                            <div class="result-header text-center mb-3">
+                                <i class="fas fa-check-circle text-success mb-2" style="font-size: 2.5rem;"></i>
+                                <h5 class="fw-semibold text-dark">Analysis Complete</h5>
+                            </div>
+                            <div class="result-content">
+                                <div class="result-info p-4 bg-light rounded-3">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8">
+                                            <h6 class="fw-semibold text-dark mb-1">Detection Result:</h6>
+                                            <p class="result-text text-success fw-semibold fs-5 mb-2" id="result-text"></p>
+                                            <!--<small class="text-muted">Confidence level will be displayed here</small>-->
+                                        </div>
+                                        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                            <button type="button" class="btn btn-outline-success" onclick="resetUpload()">
+                                                <i class="fas fa-redo me-2"></i>Try Another
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environment
+venv/
+ENV/
+env/
+.venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Uploaded images and outputs
+uploads/
+assets/
+
+
+# System files
+.DS_Store
+Thumbs.db
+
+# VS Code settings
+.vscode/
+tempCodeRunnerFile.py
+
+# Logs
+*.log
