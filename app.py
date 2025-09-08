@@ -1,197 +1,115 @@
-from __future__ import division, print_function
-# coding=utf-8
-import sys
 import os
-import glob
-import re
+import logging
 import numpy as np
+import tensorflow as tf
+from flask import Flask, request, render_template, jsonify
 from werkzeug.utils import secure_filename
 from PIL import Image
-import logging
 
-# Keras
-from keras.applications.imagenet_utils import preprocess_input, decode_predictions
-from keras.models import load_model
-from keras.utils import load_img, img_to_array
-
-# importing tensorflow for prediction
-import tensorflow as tf
-from tensorflow.keras import models, layers
-import matplotlib.pyplot as plt
-import numpy as np
-
-# Flask utils
-from flask import Flask, redirect, url_for, request, render_template, jsonify, flash
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # put this at the top of your app
-# Configure logging
+# -------------------------
+# Logging setup
+# -------------------------
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Define a flask app
+# -------------------------
+# Flask app setup
+# -------------------------
 app = Flask(__name__)
-app.secret_key = 'foliumscope-secret-key-2024'  # Add secret key for flash messages
 
-# Configuration
-UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-MAX_FILE_SIZE = 5 * 1024 * 1024  # 5MB
+# -------------------------
+# Model setup
+# -------------------------
+MODEL_PATH = "models/hackmodel.tflite"
+CLASS_NAMES = ['Grassy Shoots', 'Healthy', 'Mites', 'Ring Spot', 'YLD']
 
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = MAX_FILE_SIZE
+interpreter = None
+input_details = None
+output_details = None
 
-# Ensure upload directory exists
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+def load_tflite_model():
+    global interpreter, input_details, output_details
+    interpreter = tf.lite.Interpreter(model_path=MODEL_PATH)
+    interpreter.allocate_tensors()
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
+    logger.info("✅ TFLite model loaded successfully")
 
-# Model saved with Keras model.save()
-MODEL_PATH = 'models/hackmodel.h5'
+# Load model on startup
+load_tflite_model()
 
-# Load your trained model
-try:
-    model = load_model(MODEL_PATH)
-    logger.info("Model loaded successfully")
-except Exception as e:
-    logger.error(f"Error loading model: {e}")
-    model = None
+# -------------------------
+# Helper: Prediction
+# -------------------------
+def model_predict(img_path):
+    logger.info("Starting prediction")
 
-def allowed_file(filename):
-    """Check if file extension is allowed"""
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    # Load and preprocess image
+    img = Image.open(img_path).convert('RGB')
+    logger.info(f"Image opened: {img.size}, mode: {img.mode}")
 
-def validate_image(file_path):
-    """Validate if uploaded file is a valid image"""
-    try:
-        with Image.open(file_path) as img:
-            img.verify()
-        return True
-    except Exception:
-        return False
+    img = img.resize((256, 256))
+    logger.info("Image resized to 256x256")
 
-def model_predict(img_path, model):
-    """Enhanced prediction function with error handling"""
-    try:
-        class_names = ['Grassy Shoots', 'Healthy', 'Mites', 'Ring Spot', 'YLD']
+    img_array = tf.keras.preprocessing.image.img_to_array(img)
+    img_array = np.expand_dims(img_array, axis=0).astype(np.float32) / 255.0
+    logger.info(f"Input shape: {img_array.shape}")
 
-        # Load and preprocess image
-        img = Image.open(img_path)
+    # Run inference
+    interpreter.set_tensor(input_details[0]['index'], img_array)
+    logger.info("Tensor set")
 
-        # Convert to RGB if necessary
-        if img.mode != 'RGB':
-            img = img.convert('RGB')
+    interpreter.invoke()
+    logger.info("Interpreter invoked")
 
-        # Resize image
-        img = img.resize((256, 256))
-        img_array = tf.keras.preprocessing.image.img_to_array(img)
-        img_array = tf.expand_dims(img_array, 0)
+    predictions = interpreter.get_tensor(output_details[0]['index'])
+    logger.info(f"Raw predictions: {predictions[0]}")
 
-        # Normalize pixel values
-        img_array = img_array / 255.0
+    predicted_class = CLASS_NAMES[np.argmax(predictions[0])]
+    confidence = round(100 * np.max(predictions[0]), 2)
 
-        # Make prediction
-        predictions = model.predict(img_array)
+    return predicted_class, confidence
 
-        # Get predicted class and confidence
-        predicted_class = class_names[np.argmax(predictions[0])]
-        confidence = round(100 * (np.max(predictions[0])), 2)
-
-        logger.info(f"Prediction: {predicted_class} with {confidence}% confidence")
-
-        return predicted_class, confidence
-
-    except Exception as e:
-        logger.error(f"Prediction error: {e}")
-        raise Exception(f"Failed to analyze image: {str(e)}")
-
-@app.route('/', methods=['GET'])
+# -------------------------
+# Routes
+# -------------------------
+@app.route('/')
 def index():
-    """Main page route"""
     return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
-def upload():
-    """Enhanced prediction endpoint with better error handling"""
-    if request.method == 'POST':
-        try:
-            # Check if file was uploaded
-            if 'file' not in request.files:
-                return jsonify({'error': 'No file uploaded'}), 400
+def predict():
+    try:
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file uploaded'}), 400
 
-            file = request.files['file']
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'Empty filename'}), 400
 
-            # Check if file was selected
-            if file.filename == '':
-                return jsonify({'error': 'No file selected'}), 400
+        filename = secure_filename(file.filename)
+        filepath = os.path.join('uploads', filename)
+        os.makedirs('uploads', exist_ok=True)
+        file.save(filepath)
 
-            # Check file extension
-            if not allowed_file(file.filename):
-                return jsonify({'error': 'Invalid file type. Please upload JPG, PNG, or JPEG files.'}), 400
+        predicted_class, confidence = model_predict(filepath)
 
-            # Check if model is loaded
-            if model is None:
-                return jsonify({'error': 'Model not available. Please try again later.'}), 500
+        return jsonify({
+            'class': predicted_class,
+            'confidence': confidence
+        })
 
-            # Secure filename and save file
-            filename = secure_filename(file.filename)
-            # Add timestamp to avoid filename conflicts
-            import time
-            timestamp = str(int(time.time()))
-            filename = f"{timestamp}_{filename}"
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    except Exception as e:
+        logger.error(f"Prediction error: {e}")
+        return jsonify({'error': str(e)}), 500
 
-            file.save(file_path)
+@app.route('/health')
+def health():
+    return "OK", 200
 
-            # Validate uploaded image
-            if not validate_image(file_path):
-                os.remove(file_path)  # Clean up invalid file
-                return jsonify({'error': 'Invalid image file. Please upload a valid image.'}), 400
-
-            # Make prediction
-            predicted_class, confidence = model_predict(file_path, model)
-
-            # Clean up uploaded file (optional - remove if you want to keep uploads)
-            # os.remove(file_path)
-
-            # Return result with confidence
-            result = f"{predicted_class} ({confidence}% confidence)"
-            return jsonify({
-                'result': result,
-                'class': predicted_class,
-                'confidence': confidence
-            })
-
-        except Exception as e:
-            logger.error(f"Upload error: {e}")
-            return jsonify({'error': str(e)}), 500
-
-    return jsonify({'error': 'Method not allowed'}), 405
-
-@app.route('/health', methods=['GET'])
-def health_check():
-    """Health check endpoint"""
-    return jsonify({
-        'status': 'healthy',
-        'model_loaded': model is not None,
-        'upload_folder': os.path.exists(UPLOAD_FOLDER)
-    })
-
-@app.errorhandler(413)
-def too_large(e):
-    """Handle file too large error"""
-    return jsonify({'error': 'File too large. Maximum size is 5MB.'}), 413
-
-@app.errorhandler(404)
-def not_found(e):
-    """Handle 404 errors"""
-    return render_template('index.html'), 404
-
-@app.errorhandler(500)
-def internal_error(e):
-    """Handle internal server errors"""
-    logger.error(f"Internal server error: {e}")
-    return jsonify({'error': 'Internal server error. Please try again.'}), 500
-
+# -------------------------
+# Run app
+# -------------------------
 if __name__ == '__main__':
-    # Create uploads directory if it doesn't exist
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-    # Run the app
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
